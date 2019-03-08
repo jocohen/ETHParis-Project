@@ -1,1 +1,3 @@
 # ETHParis-Project
+
+Decentralized tracking.
