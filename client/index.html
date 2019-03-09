@@ -31,10 +31,6 @@
 		}
 	}, 100);
 
-	function getOrderDetails(id) {
-		return track.methods.lstOrder(id).call()
-	}
-
 
 	function displayOrders(ids) {
 		$("#orders").empty();
@@ -53,6 +49,15 @@
 		}
 	}
 
+	function getOrderDetails(id) {
+		console.log(track);
+		return track.methods.getOrderDetail(id).call()
+
+	// Appelle la fonction et fait quelque chose avec le résultat :
+	getOrderDetails(1).then(function(result){
+	console.log("Order 1: " + JSON.stringify(result));
+	});
+	}
 
 	window.addEventListener('load', function() {
 
