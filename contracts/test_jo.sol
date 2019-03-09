@@ -27,7 +27,7 @@ contract DeliveryTrack {
 	}
 
 	function setProvider(address transp, address client) public returns (uint Ordernumber) {
-		require(transp != 0 && client != 0);
+		// require(transp. && client != 0);
 		lstOrder[nb_cmd].provider.addr = msg.sender;
 		lstOrder[nb_cmd].provider.state = States.ACCEPTED;
 		lstOrder[nb_cmd].transporter.addr = transp;
@@ -48,7 +48,7 @@ contract DeliveryTrack {
 		lstOrder[nbOrder].client.state = States.ACCEPTED;
 	}
 
-	function getOrderState(uint nbOrder) public returns (uint provid, uint transp, uint client){
+	function getOrderState(uint nbOrder) public view returns (uint provid, uint transp, uint client){
 		require(lstOrder[nbOrder].client.addr == msg.sender);
 		uint providState = 0;
 		uint transpState = 0;
@@ -60,7 +60,7 @@ contract DeliveryTrack {
 		if (lstOrder[nbOrder].transporter.state == States.ACCEPTED){
 			transpState = 1;
 		}
-		if (lstOrder[nbOrder)].client.state == States.ACCEPTED){
+		if (lstOrder[nbOrder].client.state == States.ACCEPTED){
 			cltState = 1;
 		}
 		return (providState, transpState, cltState);
