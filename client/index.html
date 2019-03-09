@@ -2,42 +2,75 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8">
-	<title>Tracking delivery</title>
+	<title>Ethereum connexion</title>
 	<script language="javascript" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script language="javascript" type="text/javascript" src="web3.min.js"></script>
-	<script language="javascript" type="text/javascript" src="Track.js"></script>
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+	<script language="javascript" type="text/javascript" src="js/trackAbi.js"></script>
 </head>
 <body>
+	hello
+	<div id="orders"></div>
 
-</body>
-<script>
-
+	<script>
 	var track;
+	var userAccount;
 
 	function startApp() {
-		var trackAddress = "0x31170D0f7E2AB64228901D692fEF52D850Dd5244";
-		await $.getJSON('HelloWorld.json',function(data){
-		var TrackABI = data;
+		var trackAddress = "0xC577d4166Cd173CF059b92882929560c2f03B222";
+		track = new web3js.eth.Contract(trackAbi, trackAddress);
+	}
+
+	var accountInterval = setInterval(function() {
+		// Check if account has changed
+		if (web3.eth.accounts[0] !== userAccount) {
+			userAccount = web3.eth.accounts[0];
+			// Call a function to update the UI with the new account
+			console.log(userAccount)
 		}
-		track = new web3js.eth.Contract(TrackABI, trackAddress);
+	}, 100);
+
+	function getOrderDetails(id) {
+		return track.methods.lstOrder(id).call()
 	}
 
 
+	function displayOrders(ids) {
+		$("#orders").empty();
+		for (id of ids) {
+			getOrderDetails(id)
+			.then(function(orders) {
+				$("#orders").append(`<div class="order">
+				<ul>
+				<li>provider: ${orders.provier}</li>
+				<li>transporter: ${orders.transporter}</li>
+				<li>client: ${orders.client}</li>
+				<li>state: ${orders.state}</li>
+				</ul>
+				</div>`);
+			});
+		}
+	}
+
 
 	window.addEventListener('load', function() {
-		// Checking if Web3 has been injected by the browser (Mist/MetaMask)
-		if (typeof web3 !== 'undefined') {
-			// Use Mist/MetaMask's provider
-			web3js = new Web3(web3.currentProvider);
-		} else {
-			// Handle the case where the user doesn't have web3. Probably
-			// show them a message telling them to install Metamask in
-			// order to use our app.
-		}
 
-		// Now you can start your app & access web3js freely:
-		startApp()
+
+		if (web3.eth.accounts[0] !== userAccount) {
+			userAccount = web3.eth.accounts[0];
+
+			if (typeof web3 !== 'undefined') {
+				web3js = new Web3(web3.currentProvider);
+			} else {
+				toastr.warning('Please install metamask', 'Metamask!');
+			}
+
+			startApp()
+		}
 	})
+
 	</script>
 
+</body>
 </html>

@@ -1,5 +1,7 @@
 const express = require('express');
 const app = express();
+const Web3 = require('web3');
+
 
 app.use(express.static('client'));
 app.use(express.static('build/contracts'));
