@@ -4,85 +4,98 @@ contract Track {
 
 	enum States {
 		PENDING,
+		TRANSPORT,
 		ACCEPTED
 	}
 
-	struct Actor {
-		address		addr;
-		States		state;
-	}
-
 	struct Order {
-		Actor	provider;
-		Actor	transporter;
-		Actor	client;
-		bool	received;
+		address	provider;
+		address	transporter;
+		address	client;
+		States 	state;
 	}
 
-	event displayOrder(uint nbOrder, bool status, uint actor);
 
-	uint private	nb_cmd;
+	event displayOrder(uint[] idlst);
+	event SetOrder(uint id);
+	event CheckTransport(string status);
+	event CheckClient(string status);
+
+	uint private	id;
+	address private creator;
+
 	mapping (uint => Order) private lstOrder;
 
 	constructor() public {
-		nb_cmd = 0;
+		id = 0;
 	}
 
-	function setProvider(address transp, address client) public returns (uint Ordernumber) {
-		// require(transp. && client != 0);
-		lstOrder[nb_cmd].provider.addr = msg.sender;
-		// lstOrder[nb_cmd].provider.state = States.ACCEPTED;
-		lstOrder[nb_cmd].transporter.addr = transp;
-		// lstOrder[nb_cmd].transporter.state = States.PENDING;
-		lstOrder[nb_cmd].client.addr = client;
-		// lstOrder[nb_cmd].client.state = States.PENDING;
-		lstOrder[nb_cmd].received = false;
-		nb_cmd += 1;
-		return (nb_cmd - 1);
+	function setOrder(address transp, address client) public returns (uint Ordernumber) {
+		lstOrder[id].provider = msg.sender;
+		lstOrder[id].transporter = transp;
+		lstOrder[id].client = client;
+		lstOrder[id].state = States.PENDING;
+		id += 1;
+		emit SetOrder(id);
+		return (id - 1);
 	}
 
-	function checkTransport(uint nbOrder) public {
-		require(lstOrder[nbOrder].transporter.addr == msg.sender);
-		// lstOrder[nbOrder].transporter.state = States.ACCEPTED;
+	function checkTransport(uint idOrder) public {
+		require(lstOrder[idOrder].transporter == msg.sender);
+		lstOrder[idOrder].state = States.TRANSPORT;
+		emit CheckTransport("transport");
 	}
 
-	function checkClient(uint nbOrder) public {
-		require(lstOrder[nbOrder].client.addr == msg.sender);
-		// lstOrder[nbOrder].client.state = States.ACCEPTED;
-		lstOrder[nbOrder].received = true;
+	function checkClient(uint idOrder) public {
+		require(lstOrder[idOrder].client == msg.sender);
+		lstOrder[idOrder].state = States.ACCEPTED;
+		emit CheckClient("receive");
 	}
 
-	// function getOrderState(uint nbOrder) public view returns (uint provid, uint transp, uint client){
-	// 	require(lstOrder[nbOrder].client.addr == msg.sender);
-	// 	uint providState = 0;
-	// 	uint transpState = 0;
-	// 	uint cltState = 0;
-	//
-	// 	if (lstOrder[nbOrder].provider.state == States.ACCEPTED){
-	// 		providState = 1;
-	// 	}
-	// 	if (lstOrder[nbOrder].transporter.state == States.ACCEPTED){
-	// 		transpState = 1;
-	// 	}
-	// 	if (lstOrder[nbOrder].client.state == States.ACCEPTED){
-	// 		cltState = 1;
-	// 	}
-	// 	return (providState, transpState, cltState);
-	// }
+	function getOrderDetail(uint idOrder) public view returns (
+		address provider,
+		address transporter,
+		address client,
+		States	state){
 
-	function getOrderLst() public view {
+		return (lstOrder[idOrder].provider,
+				lstOrder[idOrder].transporter,
+				lstOrder[idOrder].client,
+				lstOrder[idOrder].state);
+				}
+
+
+	function getOrderLst() public view returns (uint[] memory){
 		uint	x;
-
-		for (x = 0; x < nb_cmd; x++){
-			if (lstOrder[x].provider.addr == msg.sender){
-				emit displayOrder(x, lstOrder[x].received, 1);
+		uint	count;
+		for (x = 0; x < id; x++){
+			if (lstOrder[x].provider == msg.sender){
+				count++;
 			}
-			else if (lstOrder[x].transporter.addr == msg.sender){
-				emit displayOrder(x, lstOrder[x].received, 2);
+			else if (lstOrder[x].transporter == msg.sender){
+				count++;
 			}
-			else if (lstOrder[x].transporter.addr == msg.sender){
-				emit displayOrder(x, lstOrder[x].received, 3);
+			else if (lstOrder[x].client == msg.sender){
+				count++;
 			}
 		}
+
+		uint    i = 0;
+		uint[] memory idlst = new uint[](count);
+		for (x = 0; x < id; x++){
+			if (lstOrder[x].provider == msg.sender){
+				idlst[i] = x;
+				i++;
+			}
+			else if (lstOrder[x].transporter == msg.sender){
+				idlst[i] = x;
+				i++;
+			}
+			else if (lstOrder[x].client == msg.sender){
+				idlst[i] = x;
+				i++;
+			}
+		}
+		return (idlst);
 	}
 }

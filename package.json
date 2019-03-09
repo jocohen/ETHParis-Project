@@ -1,0 +1,26 @@
+{
+  "name": "ethparis-project",
+  "version": "0.1.0",
+  "description": "Decentralize package delivery",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "start": "node server/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jocohen/ETHParis-Project.git"
+  },
+  "author": "Faceless_men",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jocohen/ETHParis-Project/issues"
+  },
+  "homepage": "https://github.com/jocohen/ETHParis-Project#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "web3": "^1.0.0-beta.48"
+  }
+}
