@@ -11,7 +11,8 @@
 	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
 	<script src="//cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 	<script language="javascript" type="text/javascript" src="/trackAbi.js"></script>
-	<script language="javascript" type="text/javascript" src="/app.js"></script>
+	<script language="javascript" type="text/javascript" src="/config.js"></script>
+	<script language="javascript" type="text/javascript" src="/create.js"></script>
 
 	<!-- Mobile Specific Metas
 	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -37,24 +38,22 @@
 	<div class="container">
 		<h3 class="section-heading" style = "margin-top: 5%">Create an tracking process</h3>
 		<!-- The above form looks like this -->
-		<form>
-			<div class="row">
-				<div class="container">
-					<label for="tranporter">Tranport address</label>
-					<input class="u-full-width" type="text" placeholder="Transporter Public key" id="transporter">
-				</div>
-				<div class="container">
-					<label for="client">Client address</label>
-					<input class="u-full-width" type="text" placeholder="Client Public key" id="client">
-				</div>
-				<div class="container">
-					<label for="Info">Information</label>
-					<input class="u-full-width" type="text" placeholder="Information" id="infos">
-				</div>
-			<input class="button-primary" type="submit" value="Submit">
-		</form>
+		<div class="row">
+			<div class="container">
+				<label for="tranporter">Tranport address</label>
+				<input class="u-full-width" type="text" placeholder="Transporter Public key" id="transporter">
+			</div>
+			<div class="container">
+				<label for="client">Client address</label>
+				<input class="u-full-width" type="text" placeholder="Client Public key" id="client">
+			</div>
+			<div class="container">
+				<label for="Info">Information</label>
+				<input class="u-full-width" type="text" placeholder="Information" id="infos">
+			</div>
+			<input type="button" class="button-primary" id="addOrder" value="Submit">
+		</div>
 	</div>
-
 	<!-- End Document
 	–––––––––––––––––––––––––––––––––––––––––––––––––– -->
 </body>
