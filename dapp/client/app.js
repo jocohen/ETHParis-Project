@@ -1,4 +1,4 @@
-var contractAddress = "0xbc36c16fc6b066692c6cdf3393e5aebf28e5c8cf";
+var contractAddress = "0x92562121319e37882b287624b4a08f9634ecf8a6";
 var tracking = web3.eth.contract(trackAbi).at(contractAddress);
 
 
@@ -26,22 +26,29 @@ var accountInterval = setInterval(function() {
 }, 100);
 
 tracking.getOrderLst(function (err, orders){
-	$(".text123").text('');
-	for (var i = 0; i < orders.length; i++) {
-		$(".text123").append('<li>' + orders[i]);
-		tracking.getOrderDetail(orders[i], function (err, data) {
-			let status;
-			if (data[3] == 0){
-				status = 'PENDING';
-			}
-			else if (data[3] == 1) {
-				status = 'TRANSPORT';
-			}
-			else if (data[3] == 2) {
-				status = 'DELIVERED';
-			}
-			let html = '| ' + status + ' |</liv><br></br>';
-			$(".text123").append(html);
-		});
+	if (err)
+	{
+
 	}
-})
+	else{
+		for (var i = 0; i < orders.length; i++) {
+			tracking.getOrderDetail(orders[i], function (err, data) {
+				console.log(i);
+				$(".text123").append('<li>' + orders[i]);
+				let status;
+				if (data[3] == 0){
+					status = 'PENDING';
+				}
+				else if (data[3] == 1) {
+					status = 'TRANSPORT';
+				}
+				else if (data[3] == 2) {
+					status = 'DELIVERED';
+				}
+				let html = '| ' + status + ' |</li>';
+				$(".text123").append(html);
+			});
+		}
+
+	}
+});
