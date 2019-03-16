@@ -24,7 +24,7 @@ contract Track {
 	uint private	id;
 	address private creator;
 
-	mapping (uint => Order) public lstOrder;
+	mapping (uint => Order) private lstOrder;
 
 	constructor() public {
 		id = 0;

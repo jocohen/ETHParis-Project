@@ -1,8 +1,9 @@
 $(document).on("click", "#addOrder", function (){
 	if ($("#transporter").val() > 0 && $("#client").val() > 0){
-		tracking.setOrder($("#transporter").val(), $("#client").val(), function (err, nbOrder) {
-			location = '/';
+		tracking.methods.setOrder($("#transporter").val(), $("#client").val()).send().then((nbOrder) => {
+			console.log("MOTH");
 		});
 	}
-	console.log('nope');
+	console.log('FUCKER');
+console.log('nope');
 });
